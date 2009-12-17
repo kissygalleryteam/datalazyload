@@ -1,6 +1,6 @@
 /**
  * 数据延迟加载组件
- * 包括 img, textarea, 以及回调函数
+ * 包括 img, textarea, 以及特定元素即将出现时的回调函数
  * @module      datalazyload
  * @creator     玉伯<lifesinger@gmail.com>
  * @depends     kissy-core, yahoo-dom-event
@@ -22,7 +22,7 @@ KISSY.add("datalazyload", function(S) {
              *   manual - 输出 html 时，已经将需要延迟加载的图片的 src 属性替换为 DATA_SRC
              * 注：对于 textarea 数据，只有手动模式
              */
-            mod: MOD.AUTO,
+            mod: MOD.MANUAL,
 
             /**
              * 当前视窗往下，diff px 外的 img/textarea 延迟加载
@@ -39,7 +39,6 @@ KISSY.add("datalazyload", function(S) {
 
     /**
      * 延迟加载组件
-     * @class DataLazyload
      * @constructor
      */
     function DataLazyload(containers, config) {
@@ -114,25 +113,6 @@ KISSY.add("datalazyload", function(S) {
         },
 
         /**
-         * 获取阈值
-         * @protected
-         */
-        _getThreshold: function() {
-            var diff = this.config.diff,
-                ret = Dom.getViewportHeight();
-
-            if (diff === DEFAULT) return 2 * ret; // diff 默认为当前视窗高度（两屏以外的才延迟加载）
-            else return ret + diff;
-        },
-
-        /**
-         * 获取当前延迟项的数量
-         */
-        _getItemsLength: function() {
-            return this.images.length + this.areaes.length + this.callbacks.els.length;
-        },
-
-        /**
          * 初始化加载事件
          * @protected
          */
@@ -164,10 +144,8 @@ KISSY.add("datalazyload", function(S) {
 
             // 加载延迟项
             function loadItems() {
-                self._loadImgs();
-                self._loadAreaes();
-                self._fireCallbacks();
-                
+                self._loadItems();
+
                 if (self._getItemsLength() === 0) {
                     Event.removeListener(win, "scroll", loader);
                     Event.removeListener(win, "resize", loader);
@@ -224,6 +202,15 @@ KISSY.add("datalazyload", function(S) {
         },
 
         /**
+         * 加载延迟项
+         */
+        _loadItems: function() {
+            this._loadImgs();
+            this._loadAreaes();
+            this._fireCallbacks();
+        },
+
+        /**
          * 加载图片
          * @protected
          */
@@ -264,7 +251,6 @@ KISSY.add("datalazyload", function(S) {
                 // 注：area 可能处于 display: none 状态，Dom.getY(area) 获取不到 Y 值
                 //    因此这里采用 area.parentNode
                 if (Dom.getY(parent) <= threshold) {
-                    // parent.removeChild(area); TODO: 需不需要？
                     parent.innerHTML = area.value;
                 } else {
                     remain.push(area);
@@ -308,6 +294,26 @@ KISSY.add("datalazyload", function(S) {
                 this.callbacks.els.push(el);
                 this.callbacks.fns.push(fn);
             }
+        },
+
+        /**
+         * 获取阈值
+         * @protected
+         */
+        _getThreshold: function() {
+            var diff = this.config.diff,
+                ret = Dom.getViewportHeight();
+
+            if (diff === DEFAULT) return 2 * ret; // diff 默认为当前视窗高度（两屏以外的才延迟加载）
+            else return ret + diff;
+        },
+
+        /**
+         * 获取当前延迟项的数量
+         * @protected
+         */
+        _getItemsLength: function() {
+            return this.images.length + this.areaes.length + this.callbacks.els.length;
         }
     });
 
@@ -356,9 +362,7 @@ KISSY.add("datalazyload", function(S) {
  *     里。可以添加 hidden 等 class, 但建议用 invisible, 并设定 height = "实际高度".
  *     这样可以保证滚动时，diff 更真实有效。
  *     注意：textarea 加载后，会替换掉父容器中的所有内容。
- *
  *  2. 延迟 callback 约定：dataLazyload.addCallback(el, fn) 表示当 el 即将出现时，触发 fn.
- *
  *  3. 所有操作都是最多触发一次，比如 callback. 来回拖动滚动条时，只有 el 第一次出现时会触发 fn 回调。
  */
 
@@ -370,5 +374,5 @@ KISSY.add("datalazyload", function(S) {
 
 /**
  * UPDATE LOG:
- *   - 2009-12-17 yubo 将 imglazyload 升级为 datalazyload, 支持 textarea 方式延迟和触发回调函数
+ *   - 2009-12-17 yubo 将 imglazyload 升级为 datalazyload, 支持 textarea 方式延迟和特定元素即将出现时的回调函数
  */
