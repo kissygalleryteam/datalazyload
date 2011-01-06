@@ -3,10 +3,9 @@
  * @module   datalazyload
  * @creator  玉伯<lifesinger@gmail.com>
  */
-KISSY.add('datalazyload', function(S, undefined) {
+KISSY.add('datalazyload/impl', function(S, DOM, Event, undefined) {
 
-    var DOM = S.DOM, Event = S.Event,
-        win = window, doc = document,
+    var win = window, doc = document,
 
         IMG_SRC_DATA = 'data-ks-lazyload',
         AREA_DATA_CLS = 'ks-datalazyload',
@@ -63,7 +62,7 @@ KISSY.add('datalazyload', function(S, undefined) {
 
         // containers 是一个 HTMLElement 时
         if (!S.isArray(containers)) {
-            containers = [S.get(containers) || doc];
+            containers = [DOM.get(containers) || doc];
         }
 
         /**
@@ -103,6 +102,7 @@ KISSY.add('datalazyload', function(S, undefined) {
         //self.threshold
 
         self._init();
+        return undefined;
     }
 
     S.augment(DataLazyload, {
@@ -129,11 +129,11 @@ KISSY.add('datalazyload', function(S, undefined) {
                 n, N, imgs, areaes, i, img,
                 lazyImgs = [], lazyAreas = [];
 
-            for (n = 0, N = containers.length; n < N; ++n) {
-                imgs = S.query('img', containers[n]);
+            for (n = 0,N = containers.length; n < N; ++n) {
+                imgs = DOM.query('img', containers[n]);
                 lazyImgs = lazyImgs.concat(S.filter(imgs, self._filterImg, self));
 
-                areaes = S.query('textarea', containers[n]);
+                areaes = DOM.query('textarea', containers[n]);
                 lazyAreas = lazyAreas.concat(S.filter(areaes, self._filterArea, self));
             }
 
@@ -343,7 +343,7 @@ KISSY.add('datalazyload', function(S, undefined) {
          */
         addCallback: function(el, fn) {
             var callbacks = this.callbacks;
-            el = S.get(el);
+            el = DOM.get(el);
 
             if (el && S.isFunction(fn)) {
                 callbacks.els.push(el);
@@ -381,7 +381,7 @@ KISSY.add('datalazyload', function(S, undefined) {
 
             // 支持数组
             if (!S.isArray(containers)) {
-                containers = [S.get(containers)];
+                containers = [DOM.get(containers)];
             }
 
             // 遍历处理
@@ -391,17 +391,17 @@ KISSY.add('datalazyload', function(S, undefined) {
                         if (container.nodeName === 'IMG') { // 本身就是图片
                             imgs = [container];
                         } else {
-                            imgs = S.query('img', container);
+                            imgs = DOM.query('img', container);
                         }
-                        
+
                         S.each(imgs, function(img) {
                             self._loadImgSrc(img, IMG_SRC_DATA + CUSTOM);
                         });
-                        
+
                         break;
-                    
+
                     default:
-                        area = S.get('textarea', container);
+                        area = DOM.get('textarea', container);
                         if (area && DOM.hasClass(area, AREA_DATA_CLS + CUSTOM)) {
                             self._loadAreaData(container, area);
                         }
@@ -413,9 +413,9 @@ KISSY.add('datalazyload', function(S, undefined) {
     // attach static methods
     S.mix(DataLazyload, DataLazyload.prototype, true, ['loadCustomLazyData', '_loadImgSrc', '_loadAreaData']);
 
-    S.DataLazyload = DataLazyload;
+    return DataLazyload;
 
-}, { requires: ['core'] });
+}, { requires: ['dom','event'] });
 
 /**
  * NOTES:
