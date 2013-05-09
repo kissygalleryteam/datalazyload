@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-touch-fullscreen" content="yes">
+<script src="http://a.tbcdn.cn/s/kissy/1.3.0/kissy-min.js" charset="utf-8"></script>
 <title>KISSY DataLazyload Module lazy load demo</title>
 <style>
 html, body {
@@ -15,7 +16,7 @@ html, body {
 </style>
 </head>
 <body>
-<h1>启用 webp</h1>
+<h2>启用 webp</h2>
 <div id="J_webpEnabled">
     <p style="height:170px"><img
             src="http://a.tbcdn.cn/kissy/1.0.0/build/imglazyload/spaceball.gif"
@@ -42,7 +43,7 @@ html, body {
     <p><img data-ks-lazyload="http://img01.taobaocdn.com/tps/i1/T1qPRVXuJcXXaCwpjX.png" /></p>
 </div>
 
-<h1>未启用 webp</h1>
+<h2>未启用 webp</h2>
 <div id="J_WebpDisabled">
     <p style="height:170px"><img data-ks-lazyload="http://img04.taobaocdn.com/tps/i4/T1bLB0XthaXXa6XtY7-490-170.png" /></p>
     <p style="height:170px"><img data-ks-lazyload="http://i.mmcdn.cn/simba/img/T1ooNGXv4cXXb1upjX.jpg" /></p>
@@ -51,32 +52,46 @@ html, body {
     <p style="height:170px"><img data-ks-lazyload="http://img01.taobaocdn.com/tps/i1/T1wJB0Xx4aXXa6XtY7-490-170.png" /></p>
 </div>
 
-<script src="/kissy/build/seed.js"></script>
-<script src="../src/datalazyload.js"></script>
 <script>
-// 启用 webp
-KISSY.use('datalazyload,core', function (S, DataLazyload) {
-    DataLazyload('#J_webpEnabled', {
-        webpFilter: function(dataSrc) {
-            var ret = '';
-            // 处理 taobaocdn 下 .jpg&.png 图片
-            if (dataSrc.indexOf('taobaocdn.com') != -1 &&
-                    (dataSrc.indexOf('.jpg') != -1 || dataSrc.indexOf('.png') != -1)) {
-                ret = dataSrc + '_.webp';
-            } else {
-                ret = dataSrc;
+var S = KISSY;
+if (S.Config.debug) {
+    var srcPath = "../../../";
+    S.config({
+        packages:[
+            {
+                name:"gallery",
+                path:srcPath,
+                charset:"utf-8",
+                ignorePackageNameInUri:true
             }
+        ]
+    });
+}
+// 启用 webp
+KISSY.use('gallery/datalazyload/1.0/index,core', function (S, DataLazyload) {
+    DataLazyload('#J_webpEnabled', {
+        // webpFilter: function(dataSrc) {
+        //     var ret = '';
+        //     // 处理 taobaocdn 下 .jpg&.png 图片
+        //     if (dataSrc.indexOf('taobaocdn.com') != -1 &&
+        //             (dataSrc.indexOf('.jpg') != -1 || dataSrc.indexOf('.png') != -1)) {
+        //         ret = dataSrc + '_.webp';
+        //     } else {
+        //         ret = dataSrc;
+        //     }
 
-            return ret;
-        }
+        //     return ret;
+        // }
+        webpFilter: [
+            [/(taobaocdn\.com.+?)\.(jpg|png)/, '$1.$2_.webp']
+        ]
     });
 });
 
 // 未启用 webp
-KISSY.use('datalazyload,core', function (S, DataLazyload) {
+KISSY.use('gallery/datalazyload/1.0/index,core', function (S, DataLazyload) {
     DataLazyload('#J_WebpDisabled');
 });
 </script>
 </body>
 </html>
-

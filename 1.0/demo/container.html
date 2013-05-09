@@ -6,9 +6,11 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-touch-fullscreen" content="yes">
+    <script src="http://a.tbcdn.cn/s/kissy/1.3.0/kissy-min.js" charset="utf-8"></script>
     <title>KISSY DataLazyload 容器模式</title>
 </head>
 <body>
+<h2>KISSY DataLazyload 容器模式</h2>
 
 <div style="height: 1000px;">
 
@@ -40,16 +42,26 @@
         </script>
     </textarea>
 </div>
-<script src="/kissy/build/seed.js"></script>
-<script src="../src/datalazyload.js"></script>
 <script>
-    KISSY.use("datalazyload", function (S, DataLazyload) {
-        var DOM = S.DOM;
-        S.ready(function (S) {
-            DataLazyload("#container1");
-            DataLazyload("#container2");
+    var S = KISSY;
+    if (S.Config.debug) {
+        var srcPath = "../../../";
+        S.config({
+            packages:[
+                {
+                    name:"gallery",
+                    path:srcPath,
+                    charset:"utf-8",
+                    ignorePackageNameInUri:true
+                }
+            ]
         });
-    });
+    }
+
+    S.use('gallery/datalazyload/1.0/index', function (S, DataLazyload) {
+        DataLazyload("#container1");
+        DataLazyload("#container2");
+    })
 </script>
 </body>
 </html>

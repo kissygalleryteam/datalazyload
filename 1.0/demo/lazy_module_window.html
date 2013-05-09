@@ -6,6 +6,7 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-touch-fullscreen" content="yes">
+    <script src="http://a.tbcdn.cn/s/kissy/1.3.0/kissy-min.js" charset="utf-8"></script>
     <title>KISSY DataLazyload Module lazy load demo</title>
     <style>
         .mod {
@@ -22,6 +23,7 @@
     </style>
 </head>
 <body>
+<h2>KISSY DataLazyload Module lazy load demo</h2>
 <div id="top" style="padding: 1px;padding-left: 20px;
 width: 100%;
 border: 1px solid green;
@@ -105,11 +107,23 @@ position: fixed;height: 240px;overflow: hidden;left:0;top:0;background-color: #f
 
 
 </div>
-<script src="/kissy/build/seed.js"></script>
-<script src="../src/datalazyload.js"></script>
 <script>
+    var S = KISSY;
+    if (S.Config.debug) {
+        var srcPath = "../../../";
+        S.config({
+            packages:[
+                {
+                    name:"gallery",
+                    path:srcPath,
+                    charset:"utf-8",
+                    ignorePackageNameInUri:true
+                }
+            ]
+        });
+    }
 
-    KISSY.use('datalazyload,core', function (S, DataLazyload) {
+    KISSY.use('gallery/datalazyload/1.0/index,core', function (S, DataLazyload) {
         var $ = S.all,
                 top = $("#top"),
                 container = $("#container");

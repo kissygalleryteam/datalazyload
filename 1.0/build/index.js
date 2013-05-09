@@ -1,8 +1,14 @@
+/*
+combined files : 
+
+gallery/datalazyload/1.0/index
+
+*/
 /**
  * @ignore
  * 数据延迟加载组件
  */
-KISSY.add(function (S, DOM, Event, Base, undefined) {
+KISSY.add('gallery/datalazyload/1.0/index',function (S, DOM, Event, Base, undefined) {
 
     var win = S.Env.host,
         doc = win.document,
@@ -772,7 +778,7 @@ KISSY.add(function (S, DOM, Event, Base, undefined) {
 
     return DataLazyload;
 
-}, { requires: ['dom', 'event', 'base', './plugin/webp'] });
+}, { requires: ['dom', 'event', 'base'] });
 
 /**
  * @ignore
@@ -840,3 +846,4 @@ KISSY.add(function (S, DOM, Event, Base, undefined) {
  *   - 2010-04-05 yubo 重构，使得对 YUI 的依赖仅限于 YDOM
  *   - 2009-12-17 yubo 将 imglazyload 升级为 datalazyload, 支持 textarea 方式延迟和特定元素即将出现时的回调函数
  */
+
