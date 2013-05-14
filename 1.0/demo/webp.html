@@ -69,22 +69,23 @@ if (S.Config.debug) {
 }
 // 启用 webp
 KISSY.use('gallery/datalazyload/1.0/index,core', function (S, DataLazyload) {
-    DataLazyload('#J_webpEnabled', {
-        // webpFilter: function(dataSrc) {
-        //     var ret = '';
-        //     // 处理 taobaocdn 下 .jpg&.png 图片
-        //     if (dataSrc.indexOf('taobaocdn.com') != -1 &&
-        //             (dataSrc.indexOf('.jpg') != -1 || dataSrc.indexOf('.png') != -1)) {
-        //         ret = dataSrc + '_.webp';
-        //     } else {
-        //         ret = dataSrc;
-        //     }
+    DataLazyload.isWebpSupported(function(isSupported) {
+        var conf = {};
+        if (isSupported) {
+            conf.onStart = function(obj) {
+              if (obj.type == 'img') {
+                var src = obj.src;
+                if (src.indexOf('taobaocdn.com') !== -1 && (src.indexOf('.jpg') || src.indexOf('.png'))) {
+                  src += '_.webp';
+                }
 
-        //     return ret;
-        // }
-        webpFilter: [
-            [/(taobaocdn\.com.+?)\.(jpg|png)/, '$1.$2_.webp']
-        ]
+                S.log(src);
+
+                return src;
+              }
+            };
+        }
+        DataLazyload('#J_webpEnabled', conf);
     });
 });
 

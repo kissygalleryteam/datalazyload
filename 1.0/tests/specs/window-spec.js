@@ -1,4 +1,4 @@
-KISSY.use('datalazyload,dom,node', function (S, DataLazyload, DOM, Node) {
+KISSY.use('gallery/datalazyload/1.0/index,dom,node', function (S, DataLazyload, DOM, Node) {
     var $ = Node.all;
     describe('datalazyload', function () {
 
@@ -30,8 +30,13 @@ KISSY.use('datalazyload,dom,node', function (S, DataLazyload, DOM, Node) {
                     var newImg = new Image();
                     newImg.src = 'http://a.tbcdn.cn/kissy/1.0.0/build/imglazyload/spaceball.gif';
 
+
+                    var onStartParam;
                     var d = new DataLazyload({
-                        diff: diff
+                        diff: diff,
+                        onStart: function(obj) {
+                          onStartParam = obj;
+                        }
                     });
 
                     waitsFor(function () {
@@ -52,6 +57,9 @@ KISSY.use('datalazyload,dom,node', function (S, DataLazyload, DOM, Node) {
 
                     runs(function () {
                         expect(img.attr('src')).toBe(realSrc);
+                        expect(onStartParam.type).toBe('img');
+                        expect(onStartParam.elem).toBe(img.getDOMNode());
+                        expect(onStartParam.src).toBe(realSrc);
                         expect(d._destroyed).toBeTruthy();
                     });
 

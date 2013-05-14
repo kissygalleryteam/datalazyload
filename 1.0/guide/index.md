@@ -22,7 +22,7 @@ KISSY.use('datalazyload',function(S,DataLazyload){
 * placeholder
 * execScript
 * autoDestroy
-* webpFilter
+* onStart
 
 ## Methods
 * addCallback()
@@ -37,6 +37,7 @@ KISSY.use('datalazyload',function(S,DataLazyload){
 
 ## Static Methods
 * loadCustomLazyData()
+* isWebpSupported()
 
 ## Class Detail
 ### DataLazyload (config)
@@ -60,31 +61,34 @@ KISSY.use('datalazyload',function(S,DataLazyload){
   * {String} - 默认为 http://a.tbcdn.cn/kissy/1.0.0/build/imglazyload/spaceball.gif, 如果懒加载图像没有设置 src 则作为图像的占位图.
 * execScript
   * {Boolean} - 默认为 true , 是否执行 textarea 里面的脚本.
-* webpFilter
-  * {Array|Function} 默认值为 null
-    * {Array} - 同 kissy map 设置
-      ```js
-      DataLazyload('#J_webpEnabled', {
-          webpFilter: [
-            [/(taobaocdn\.com.+?)\.(jpg|png)/, '$1.$2_.webp']
-          ]
-      });
-      ```
+* onStart
+  * {Function} 默认值为 null, 替换 src 之前调用的函数, 可以对图片地址做处理, 如 webp 的加载
     * {Function}, 推荐
       ```js
-      DataLazyload('#J_webpEnabled', {
-          webpFilter: function(dataSrc) {
-              var ret = '';
-              // 处理 taobaocdn 下 .jpg&.png 图片
-              if (dataSrc.indexOf('taobaocdn.com') != -1 &&
-                      (dataSrc.indexOf('.jpg') != -1 || dataSrc.indexOf('.png') != -1)) {
-                  ret = dataSrc + '_.webp';
-              } else {
-                  ret = dataSrc;
-              }
+      DataLazyload.isWebpSupported(function(isSupported) {
+          var conf = {};
+          if (isSupported) {
+              /**
+               * obj {Object}
+               *  - type: 'img' || 'textarea'
+               *  - elem: HtmlElement
+               *  - src 如果 type 是 'img', 存在这个属性, 为图片地址
+               *  - value 如果 type 是 'textarea', 存在这个属性, 为 textarea.value
+               */
+              conf.onStart = function(obj) {
+                if (obj.type == 'img') {
+                  var src = obj.data.src;
+                  if (src.indexOf('taobaocdn.com') !== -1 && (src.indexOf('.jpg') || src.indexOf('.png'))) {
+                    src += '_.webp';
+                  }
 
-              return ret;
+                  S.log(src);
+
+                  return src;
+                }
+              };
           }
+          DataLazyload('#J_webpEnabled', conf);
       });
       ```
 
@@ -123,6 +127,11 @@ KISSY.use('datalazyload',function(S,DataLazyload){
              此时 textarea 需要有样式类 `ks-datalazyload-custom`
          - `img` 或 `img-src`, 即表示延迟加载使用的是 img 方式.
             此时 img 的真实地址须放在属性 `data-ks-lazyload-custom` 中
+
+* static isWebpSupported (callback)
+  * 浏览器是否支持 webp
+  * Parameters:
+    * callback (Function) - 接受一个参数{Boolean}, 表示浏览器是否支持 webp 格式
 
 ## Note
 当 第一个调用参数为数组时进入兼容模式( 1.2 )，此时懒加载元素是否渲染不判断是否在容器内，只判断是否出现在视窗中。例如
