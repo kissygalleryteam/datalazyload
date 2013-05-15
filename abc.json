@@ -1,0 +1,13 @@
+{
+    "name": "datalazyload",
+    "version": "1.0",
+    "desc": "kissy 延迟加载组件",
+    "cover": "",
+    "author": {
+        "name": "kissy-team",
+        "email": "kissy-team@gmail.com",
+        "page": "http://gallery.kissyui.com/"
+    },
+    "type": "kissy-pie",
+    "type-url": "http://abc.alibaba-inc.com/r/kissy-pie"
+}
