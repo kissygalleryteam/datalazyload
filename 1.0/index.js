@@ -36,7 +36,7 @@ KISSY.add(function (S, DOM, Event, Base, undefined) {
             }
             if(S.isFunction(webpReplacer))
             {
-                S.use("gallery/datalazyload/1.0/plugin/webp"||(S.Uri(modName,"/plugin/webp").toString()),function(S,Webp){
+                S.use((new S.Uri(modName).resolve("./plugin/webp").toString()),function(S,Webp){
                     WebP.isSupport(function(isSupport){
                         setSrc(isSupport?webpReplacer(param.src):param.src);
                     });
