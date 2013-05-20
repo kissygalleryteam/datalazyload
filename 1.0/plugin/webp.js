@@ -6,38 +6,39 @@ KISSY.add(function(S) {
 
   if (this.WebP) return;
   this.WebP = {};
-
-  WebP._cb = function(isSupport, _cb) {
-    this.isSupport = function(cb) {
-      cb(isSupport);
-    };
-    _cb(isSupport);
-    if (window.chrome || window.opera && window.localStorage) {
-      window.localStorage.setItem("webpsupport", isSupport);
+     function isSupportStorage(cb) {
+        if ((!window.chrome && !window.opera)){
+            cb(false);
+            return;
+        }
+        var val=window.localStorage && window.localStorage.getItem("webpsupport");
+        if(val!==null)
+        {
+            cb(val === "true");
+            return;
+        }
+         isSupportTest(function(isSupport){
+            window.localStorage && window.localStorage.setItem("webpsupport", isSupport);
+            cb(isSupport);
+        });
     }
-  };
-
-  WebP.isSupport = function(cb) {
-    if (!cb) return;
-    if (!window.chrome && !window.opera) return WebP._cb(false, cb);
-    if (window.localStorage && window.localStorage.getItem("webpsupport") !== null) {
-      var val = window.localStorage.getItem("webpsupport");
-      WebP._cb(val === "true", cb);
-      return;
+    function isSupportTest(cb) {
+        var img = new Image();
+        img.src = "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA";
+        img.onload = img.onerror = function() {
+            cb(img.width === 2 && img.height === 2);
+        };
     }
-    var img = new Image();
-    img.src = "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA";
-    img.onload = img.onerror = function() {
-      WebP._cb(img.width === 2 && img.height === 2, cb);
-    };
-  };
-
-  WebP.run = function(cb) {
-    this.isSupport(function(isSupport) {
-      if (isSupport) cb();
-    });
-  };
-
+    WebP.isSupport = function(cb) {
+        if (!cb) return;
+        if(WebP._isSupport===undefined){
+            isSupportStorage(function(isSupport){
+                cb(WebP._isSupport=isSupport);
+            });
+            return;
+        }
+        cb(WebP._isSupport);
+    }
 })();
 
   return window.WebP;

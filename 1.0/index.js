@@ -2,7 +2,7 @@
  * @ignore
  * 数据延迟加载组件
  */
-KISSY.add(function (S, DOM, Event, Base, WebpPlugin, undefined) {
+KISSY.add(function (S, DOM, Event, Base, undefined) {
 
     var win = S.Env.host,
         doc = win.document,
@@ -14,27 +14,38 @@ KISSY.add(function (S, DOM, Event, Base, WebpPlugin, undefined) {
         SCROLL = 'scroll',
         TOUCH_MOVE = "touchmove",
         RESIZE = 'resize',
-        DURATION = 100;
+        DURATION = 100,
+        modName=this.name;
 
     // 加载图片 src
-    var loadImgSrc = function (img, flag, onStart) {
+    var loadImgSrc = function (img, flag, onStart,webpReplacer) {
         flag = flag || IMG_SRC_DATA;
         var dataSrc = img.getAttribute(flag),
-            realSrc = '';
-
-        if (dataSrc && img.src != dataSrc) {
-            if (S.isFunction(onStart)) {
-                var ret = onStart({
-                  type: 'img',
-                  elem: img,
-                  src: dataSrc
-                });
-                if (ret) {
-                  dataSrc = ret;
-                }
+            param={
+                type: 'img',
+                elem: img,
+                src: dataSrc
+            },
+            result=(!S.isFunction(onStart)) || (onStart(param)!==false);
+        if(result && param.src)
+        {
+            function setSrc(src)
+            {
+                if (img.src != src) {img.src = src;}
+                img.removeAttribute(flag);
             }
-            img.src = dataSrc;
-            img.removeAttribute(flag);
+            if(S.isFunction(webpReplacer))
+            {
+                S.use("gallery/datalazyload/1.0/plugin/webp"||(S.Uri(modName,"/plugin/webp").toString()),function(S,Webp){
+                    WebP.isSupport(function(isSupport){
+                        setSrc(isSupport?webpReplacer(param.src):param.src);
+                    });
+                });
+            }
+            else
+            {
+                setSrc(param.src);
+            }
         }
     };
 
@@ -345,8 +356,6 @@ KISSY.add(function (S, DOM, Event, Base, WebpPlugin, undefined) {
             // 加载函数
             self._loadFn = S.buffer(loadItems, DURATION, self);
 
-            img.src = placeholder;
-
             function firstLoad() {
                 self['_filterItems']();
                 // 需要立即加载一次，以保证第一屏的延迟项可见
@@ -361,6 +370,7 @@ KISSY.add(function (S, DOM, Event, Base, WebpPlugin, undefined) {
             } else {
                 img.onload = firstLoad;
             }
+            img.src = placeholder;
         },
 
         /**
@@ -402,7 +412,7 @@ KISSY.add(function (S, DOM, Event, Base, WebpPlugin, undefined) {
             var self = this;
             self._images = S.filter(self._images, function (img) {
                 if (elementInViewport(img, windowRegion, containerRegion)) {
-                    return loadImgSrc(img, undefined, self.get('onStart'));
+                    return loadImgSrc(img, undefined, self.get('onStart'), self.get('webpReplacer'));
                 } else {
                     return true;
                 }
@@ -715,24 +725,12 @@ KISSY.add(function (S, DOM, Event, Base, WebpPlugin, undefined) {
 
     DataLazyload.loadCustomLazyData = loadCustomLazyData;
 
-    /**
-     * check browser webp format support
-     * @ignore
-     * @method
-     * @param {Function} callback with first param{Boolean} telling whether webp is supported
-     */
-    function isWebpSupported(callback) {
-        WebpPlugin.isSupport(callback);
-    }
-
-    DataLazyload.isWebpSupported = isWebpSupported;
-
 
     S.DataLazyload = DataLazyload;
 
     return DataLazyload;
 
-}, { requires: ['dom', 'event', 'base', './plugin/webp'] });
+}, { requires: ['dom', 'event', 'base'] });
 
 /**
  * @ignore

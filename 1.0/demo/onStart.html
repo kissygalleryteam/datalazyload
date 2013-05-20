@@ -16,8 +16,7 @@ html, body {
 </style>
 </head>
 <body>
-<h2>启用 webp</h2>
-<div id="J_webpEnabled">
+<div id="test">
     <p style="height:170px"><img
             src="http://a.tbcdn.cn/kissy/1.0.0/build/imglazyload/spaceball.gif"
             data-ks-lazyload="http://img03.taobaocdn.com/tps/i3/T1prVTXpVcXXa6XtY7-490-170.png" /></p>
@@ -43,15 +42,6 @@ html, body {
     <p><img data-ks-lazyload="http://img01.taobaocdn.com/tps/i1/T1qPRVXuJcXXaCwpjX.png" /></p>
 </div>
 
-<h2>未启用 webp</h2>
-<div id="J_WebpDisabled">
-    <p style="height:170px"><img data-ks-lazyload="http://img04.taobaocdn.com/tps/i4/T1bLB0XthaXXa6XtY7-490-170.png" /></p>
-    <p style="height:170px"><img data-ks-lazyload="http://i.mmcdn.cn/simba/img/T1ooNGXv4cXXb1upjX.jpg" /></p>
-    <p style="height:170px"><img data-ks-lazyload="http://i.mmcdn.cn/simba/img/T1CudZXz8bXXb1upjX.jpg" /></p>
-    <p style="height:170px"><img data-ks-lazyload="http://i.mmcdn.cn/simba/img/T1i5JBXDheXXb1upjX.jpg" /></p>
-    <p style="height:170px"><img data-ks-lazyload="http://img01.taobaocdn.com/tps/i1/T1wJB0Xx4aXXa6XtY7-490-170.png" /></p>
-</div>
-
 <script>
 var S = KISSY;
 if (S.Config.debug) {
@@ -69,19 +59,15 @@ if (S.Config.debug) {
 }
 // 启用 webp
 KISSY.use('gallery/datalazyload/1.0/index', function (S, DataLazyload) {
-    DataLazyload('#J_webpEnabled', {
-        webpReplacer:function(src) {
-            if (src.indexOf('taobaocdn.com') !== -1 && (src.indexOf('.jpg') || src.indexOf('.png'))) {
-                src += '_.webp';
+    DataLazyload('#test', {
+        onStart:function(obj) {
+            var startTime= S.now();
+            obj.elem.onload=obj.elem.onerror=function(){
+                obj.elem.onload=obj.elem.onerror=null;
+                console.log(["loadetime:",S.now()-startTime,obj.elem.src]);
             }
-            return src;
         }
     });
-});
-
-// 未启用 webp
-KISSY.use('gallery/datalazyload/1.0/index', function (S, DataLazyload) {
-    DataLazyload('#J_WebpDisabled');
 });
 </script>
 </body>
