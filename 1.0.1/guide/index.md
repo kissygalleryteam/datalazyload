@@ -58,7 +58,7 @@ KISSY.use('gallery/datalazyload/1.1/',function(S,DataLazyload){
   * Number 类型时当前视窗往下, diff px 外的 img/textarea 延迟加载, 适当设置此值, 可以让用户在拖动时感觉数据已经加载好, 默认为当前视窗（容器视窗）高度(两屏以外的才延迟加载).
   * Object 类型可以指定 left/top/right/bottom 数值，表示预加载当前视窗（容器视窗）以外上下左右的距离的元素.
 * placeholder
-  * {String} - 默认为 http://a.tbcdn.cn/kissy/1.0.0/build/imglazyload/spaceball.gif, 如果懒加载图像没有设置 src 则作为图像的占位图.
+  * {String} - 默认为 http://g.tbcdn.cn/s.gif, 如果懒加载图像没有设置 src 则作为图像的占位图.
 * execScript
   * {Boolean} - 默认为 true , 是否执行 textarea 里面的脚本.
 * onStart

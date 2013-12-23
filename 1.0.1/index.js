@@ -207,14 +207,14 @@ KISSY.add(function (S, DOM, Event, Base, undefined) {
          * Placeholder img url for lazy loaded _images if image 's src is empty.
          * must be not empty!
          *
-         * Defaults to: http://a.tbcdn.cn/kissy/1.0.0/build/imglazyload/spaceball.gif
+         * Defaults to: http://g.tbcdn.cn/s.gif
          * @cfg {String} placeholder
          */
         /**
          * @ignore
          */
         placeholder: {
-            value: 'http://a.tbcdn.cn/kissy/1.0.0/build/imglazyload/spaceball.gif'
+            value: 'http://g.tbcdn.cn/s.gif'
         },
 
         /**
