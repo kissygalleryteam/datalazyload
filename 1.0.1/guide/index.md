@@ -8,7 +8,7 @@ DataLazyload
 
 ## 组件使用
 ```js
-KISSY.use('gallery/datalazyload/1.1/',function(S,DataLazyload){
+KISSY.use('gallery/datalazyload/1.0.1/',function(S,DataLazyload){
     // use DataLazyload
 });
 ```
