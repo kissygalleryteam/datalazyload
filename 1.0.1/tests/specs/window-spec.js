@@ -28,7 +28,7 @@ KISSY.use('gallery/datalazyload/1.0/index,dom,node', function (S, DataLazyload, 
                     img.attr('data-ks-lazyload', realSrc);
 
                     var newImg = new Image();
-                    newImg.src = 'http://a.tbcdn.cn/kissy/1.0.0/build/imglazyload/spaceball.gif';
+                    newImg.src = 'http://g.tbcdn.cn/s.gif';
 
 
                     var onStartParam;
