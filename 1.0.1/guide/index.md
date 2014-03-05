@@ -134,11 +134,13 @@ KISSY.use('gallery/datalazyload/1.0.1/',function(S,DataLazyload){
     * callback (Function) - 接受一个参数{Boolean}, 表示浏览器是否支持 webp 格式
 
 ## Note
-当 第一个调用参数为数组时进入兼容模式( 1.2 )，此时懒加载元素是否渲染不判断是否在容器内，只判断是否出现在视窗中。例如
+- 当 第一个调用参数为数组时进入兼容模式( 1.2 )，此时懒加载元素是否渲染不判断是否在容器内，只判断是否出现在视窗中。例如
 ```js
 new DataLazyLoad([document.getElementById('x1'),document.getElementById('x2')]);
 ```
-*几点性能注意：*
+- diff 要设置为对象，如果只设置为数字，会导致从下往上滚动时不能懒加载.
+
+### 几点性能注意
 - autoDestroy 属性默认为 true ，那么当初始化时检测到的容器内懒加载元素都加载完毕后会自动调用 destroy 方法，若容器后面可能有动态添加的懒加载元素，请设置 autoDestroy 属性为false，并在后期手动调用 destroy 方法
 
 - 请注意实例化多个容器互相嵌套的 datalazyload 时重复检测问题，例如
