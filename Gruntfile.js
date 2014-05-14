@@ -29,8 +29,12 @@ module.exports = function(grunt) {
                     {
                         src: "<%= pkg.version %>/index.js",
                         dest: "<%= pkg.version %>/build/index.js"
-                    }
-                ]
+                    },
+					{
+						src: "<%= pkg.version %>/plugin/webp.js",
+						dest: "<%= pkg.version %>/build/plugin/webp.js"
+					}
+				]
             }
         },
         // 打包后压缩文件
@@ -41,7 +45,8 @@ module.exports = function(grunt) {
             },
             base: {
                 files: {
-                    '<%= pkg.version %>/build/index-min.js': ['<%= pkg.version %>/build/index.js']
+					'<%= pkg.version %>/build/index-min.js': ['<%= pkg.version %>/build/index.js'],
+					'<%= pkg.version %>/build/plugin/webp-min.js': ['<%= pkg.version %>/build/plugin/webp.js']
                 }
             }
         }
