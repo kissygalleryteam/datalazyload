@@ -1,14 +1,13 @@
 ## datalazyload
 
-### 说明
-* datalayzload 1.3 之后分离到 gallery
-* 在 [kissy 1.3](https://github.com/kissyteam/kissy/commit/838572160f448a89fdcb1be2e87a069d4014a02d) 的基础上添加 `onStart` 属性
+* 版本：2.0.0
+* 教程：[http://gallery.kissyui.com/datalazyload/2.0.0/guide/index.html](http://gallery.kissyui.com/datalazyload/2.0.0/guide/index.html)
+* demo：[http://gallery.kissyui.com/datalazyload/2.0.0/demo/index.html](http://gallery.kissyui.com/datalazyload/2.0.0/demo/index.html)
 
-### demo
-* http://gallery.kissyui.com/datalazyload/1.0.1/demo/index.html
+## changelog
 
-### 文档
-* http://gallery.kissyui.com/datalayzload/1.0.1/guide/index.html
+### V2.0.0
 
-### Changes
-* 添加 `onStart` 属性, 在图片地址(img), innerHTML 修改之前可以控制, 如 webp 的支持
+    [!]
+
+
