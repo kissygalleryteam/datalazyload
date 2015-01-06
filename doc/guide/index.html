@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>datalazyload</title>
+    <link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://docs.kissyui.com/1.4/source/guideline/templates/assets/com-prettify.css">
+    <link rel="stylesheet" href="http://docs.kissyui.com/1.4/source/guideline/templates/assets/com.css">
+    <script src="http://cdn.staticfile.org/jquery/2.1.1-rc2/jquery.min.js"></script>
+    <script src="http://cdn.staticfile.org/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="http://cdn.staticfile.org/prettify/r298/prettify.min.js"></script>
+    <script src="http://g.tbcdn.cn/kissy/k/1.4.8/seed-min.js" data-config="{combine:true}"></script>
+  </head>
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+    <div id="header"><a href="http://docs.kissyui.com/" class="logo">kissy</a>
+      <nav><a href="http://docs.kissyui.com/1.4/docs/html/coms.html">优秀组件推荐</a></nav>
+    </div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3 bs-docs-sidebar">
+          <ul data-spy="affix" data-offset-top="0" class="nav nav-list bs-docs-sidenav"></ul>
+        </div>
+        <div class="span9 bs-docs-content">
+          <h1 data-id="undefined" class="title">datalazyload</h1>
+          <p class="author-wrapper"><span>组件有问题？旺旺联系作者：</span><a href="https://github.com/bachi" target="_blank" data-name="拔赤" class="author"><img src="https://avatars.githubusercontent.com/u/491515?v=2&amp;s=60" alt="拔赤"></a><span class="author-name">拔赤</span>
+          </p>
+          <div class="common-link"><a href="../demo/index.html" target="_blank" class="demo">示例</a><a href="https://github.com/kissygalleryteam/datalazyload" target="_blank" class="source">源码</a></div>
+          <p class="com-info"><span class="info-label">View</span><span data-com="datalazyload" class="J_View">3096</span></p>
+          <p class="com-info"><span class="info-label">所属分类</span><a href="http://kpm.taobao.net/list/框架&amp;工具">框架&amp;工具</a>
+          </p>
+          <p class="com-info"><span class="info-label">kissy版本</span><span>1.4.X</span>
+          </p><h1 id="datalazyload">DataLazyload</h1>
+<p>数据延迟加载组件.
+很多时候, 用户在第一屏就发生了跳转, 大量”未曾露面”的图片下载对用户来说是无意义的.
+<code>DataLazyload</code> 可以 “揣测” 用户的行为, 当用户想看某个区域时, 才开始下载这个区域的图片.
+除了延迟图片下载, DataLazyload 还可以延迟某个区域的所有 html 的渲染, 这对 Tabs 等 UI 组件很有裨益, 能提高整个页面的性能.</p>
+<h2 id="-">组件使用</h2>
+<pre><code class="lang-js">KISSY.use(&#39;kg/datalazyload/2.0.0/&#39;,function(S,DataLazyload){
+    // use DataLazyload
+});
+</code></pre>
+<h3 id="-demo-demo-index-html-"><a href="../demo/index.html">demo</a></h3>
+<h2 id="class">Class</h2>
+<ul>
+<li>DataLazyload</li>
+</ul>
+<h2 id="configs">Configs</h2>
+<ul>
+<li>diff</li>
+<li>placeholder</li>
+<li>execScript</li>
+<li>autoDestroy</li>
+<li>onStart</li>
+</ul>
+<h2 id="methods">Methods</h2>
+<ul>
+<li>addCallback()</li>
+<li>removeCallback()</li>
+<li>addElements()</li>
+<li>removeElements()</li>
+<li>getElements()</li>
+<li>refresh()</li>
+<li>pause()</li>
+<li>resume()</li>
+<li>destroy()</li>
+</ul>
+<h2 id="static-methods">Static Methods</h2>
+<ul>
+<li>loadCustomLazyData()</li>
+<li>isWebpSupported()</li>
+</ul>
+<h2 id="class-detail">Class Detail</h2>
+<h3 id="datalazyload-config-">DataLazyload (config)</h3>
+<ul>
+<li>继承自 Base</li>
+<li>Parameters:<ul>
+<li>config (Object) – 配置项, 详细见下方 <code>Configs Detail</code>.</li>
+</ul>
+</li>
+</ul>
+<p><em>Note</em>
+容器内需要懒加载的图片的真实地址需要放在 <code>data-ks-lazyload 中</code>。 需要懒加载的 <code>textarea</code> 需具备样式类 <code>ks-datalazyload</code></p>
+<h2 id="configs-detail">Configs Detail</h2>
+<ul>
+<li>autoDestroy<ul>
+<li>{Boolean} - 默认为 true , 当初始化时检测到的容器内懒加载元素都加载完毕后是否自动调用 destroy 方法</li>
+</ul>
+</li>
+<li>container<ul>
+<li>{String|HTMLElement} - 默认为 document , 图片所在容器，当懒加载元素在容器中和视窗中同时出现时进行渲染。</li>
+</ul>
+</li>
+<li>diff<ul>
+<li>{Number|Object} -</li>
+<li>Number 类型时当前视窗往下, diff px 外的 img/textarea 延迟加载, 适当设置此值, 可以让用户在拖动时感觉数据已经加载好, 默认为当前视窗（容器视窗）高度(两屏以外的才延迟加载).</li>
+<li>Object 类型可以指定 left/top/right/bottom 数值，表示预加载当前视窗（容器视窗）以外上下左右的距离的元素.</li>
+</ul>
+</li>
+<li>placeholder<ul>
+<li>{String} - 默认为 <a href="http://g.tbcdn.cn/s.gif">http://g.tbcdn.cn/s.gif</a>, 如果懒加载图像没有设置 src 则作为图像的占位图.</li>
+</ul>
+</li>
+<li>execScript<ul>
+<li>{Boolean} - 默认为 true , 是否执行 textarea 里面的脚本.</li>
+</ul>
+</li>
+<li><p>onStart</p>
+<ul>
+<li><p>{Function} 默认值为 null, 替换 src 之前调用的函数, 可以对图片地址做处理, 如 webp 的加载</p>
+<ul>
+<li><p>{Function}, 推荐</p>
+<pre><code class="lang-js">DataLazyload.isWebpSupported(function(isSupported) {
+    var conf = {};
+    if (isSupported) {
+        /**
+         * obj {Object}
+         *  - type: &#39;img&#39; || &#39;textarea&#39;
+         *  - elem: HtmlElement
+         *  - src 如果 type 是 &#39;img&#39;, 存在这个属性, 为图片地址
+         *  - value 如果 type 是 &#39;textarea&#39;, 存在这个属性, 为 textarea.value
+         */
+        conf.onStart = function(obj) {
+          if (obj.type == &#39;img&#39;) {
+            var src = obj.data.src;
+            if (src.indexOf(&#39;taobaocdn.com&#39;) !== -1 &amp;&amp; (src.indexOf(&#39;.jpg&#39;) || src.indexOf(&#39;.png&#39;))) {
+              src += &#39;_.webp&#39;;
+            }
+
+            S.log(src);
+
+            return src;
+          }
+        };
+    }
+    DataLazyload(&#39;#J_webpEnabled&#39;, conf);
+});
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="methods-detail">Methods Detail</h2>
+<ul>
+<li>addCallback (el, fn)<ul>
+<li>添加回调函数. 当 el 即将出现在视图中时, 触发 fn</li>
+</ul>
+</li>
+<li>removeCallback (el, fn)<ul>
+<li>删除回调函数. 参数同 addCallback</li>
+</ul>
+</li>
+<li>addElements (els)<ul>
+<li>添加元素到懒加载列表.</li>
+<li>Parameters:<ul>
+<li>els (HTMLElement[]) – 新的懒加载元素列表</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>removeElements (els)<ul>
+<li>从懒加载列表中删除元素.</li>
+<li>Parameters:<ul>
+<li>els (HTMLElement[]) – 已有的懒加载元素列表</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>getElements ()<ul>
+<li>得到懒加载元素列表</li>
+<li>::returns: {Object} eg: {images:[],textareas:[]}</li>
+</ul>
+</li>
+<li>refresh ()<ul>
+<li>强制立刻检测懒加载元素</li>
+</ul>
+</li>
+<li>pause ()<ul>
+<li>暂停监控懒加载元素</li>
+</ul>
+</li>
+<li>resume ()<ul>
+<li>继续监控懒加载元素</li>
+</ul>
+</li>
+<li>destroy ()<ul>
+<li>停止监控并销毁组件</li>
+</ul>
+</li>
+</ul>
+<h2 id="static-methods-detail">Static Methods Detail</h2>
+<ul>
+<li><p>static loadCustomLazyData (containers, type)</p>
+<ul>
+<li>加载自定义延迟数据</li>
+<li>Parameters:<ul>
+<li>containers (HTMLElement[]) – 包含自定义延迟加载项的容器元素</li>
+<li>type (String) – 延迟加载方式, 可取:<ul>
+<li><code>textarea</code> 或 <code>area-data</code> , 即表示延迟加载使用的是 textarea 方式;
+  此时 textarea 需要有样式类 <code>ks-datalazyload-custom</code></li>
+<li><code>img</code> 或 <code>img-src</code>, 即表示延迟加载使用的是 img 方式.
+ 此时 img 的真实地址须放在属性 <code>data-ks-lazyload-custom</code> 中</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>static isWebpSupported (callback)</p>
+<ul>
+<li>浏览器是否支持 webp</li>
+<li>Parameters:<ul>
+<li>callback (Function) - 接受一个参数{Boolean}, 表示浏览器是否支持 webp 格式</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="note">Note</h2>
+<ul>
+<li>当 第一个调用参数为数组时进入兼容模式( 1.2 )，此时懒加载元素是否渲染不判断是否在容器内，只判断是否出现在视窗中。例如<pre><code class="lang-js">new DataLazyLoad([document.getElementById(&#39;x1&#39;),document.getElementById(&#39;x2&#39;)]);
+</code></pre>
+</li>
+<li>diff 要设置为对象，如果只设置为数字，会导致从下往上滚动时不能懒加载.</li>
+</ul>
+<h3 id="-">几点性能注意</h3>
+<ul>
+<li><p>autoDestroy 属性默认为 true ，那么当初始化时检测到的容器内懒加载元素都加载完毕后会自动调用 destroy 方法，若容器后面可能有动态添加的懒加载元素，请设置 autoDestroy 属性为false，并在后期手动调用 destroy 方法</p>
+</li>
+<li><p>请注意实例化多个容器互相嵌套的 datalazyload 时重复检测问题，例如</p>
+<p>  实例1</p>
+<pre><code class="lang-js">  new DataLazyLoad({
+      container: document
+  });
+</code></pre>
+<p>  实例2</p>
+<pre><code class="lang-js">  new DataLazyLoad({
+      container: &#39;#xx&#39;
+  });
+</code></pre>
+<p>  若 <code>#xx</code> 的懒加载元素在实例1实例化前就存在，则会导致实例1与实例2重复检测同一元素问题.</p>
+</li>
+</ul>
+<ul>
+<li><p>请注意不显示元素的检测，例如实例</p>
+<pre><code class="lang-js">  var  = new DataLazyLoad({
+      container: &#39;#yy&#39;
+  });
+</code></pre>
+<p>  若某种情况下，例如 tab 切换导致 <code>#yy.display=&#39;none&#39;</code>，之后的所有监控都是性能浪费. 此时可以调用 <code>pause</code> 方法来暂停该实例的检测，</p>
+<pre><code class="lang-js">  d.pause();
+</code></pre>
+<p>  在再次 tab 切换后，<code>#yy.display=&#39;&#39;</code> ，调用 resume 来重新监控.</p>
+<pre><code class="lang-js">  d.resume();
+</code></pre>
+</li>
+</ul>
+
+          <div style="display:none;"><script type="text/javascript" src="http://tajs.qq.com/stats?sId=36378479" charset="UTF-8"></script></div>
+          <script src="http://docs.kissyui.com/1.4/source/guideline/templates/assets/com.js"></script>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
